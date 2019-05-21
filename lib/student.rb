@@ -10,8 +10,6 @@ class Student
   end
 
   def self.all
-    # retrieve all the rows from the "Students" database
-    # remember each row should be a new instance of the Student class
     sql = <<-SQL
       SELECT *
       FROM students
@@ -60,4 +58,19 @@ class Student
     sql = "DROP TABLE IF EXISTS students"
     DB[:conn].execute(sql)
   end
+
+  def self.all_students_in_grade_9
+    # call .new_from_db while new_student.grade == 9
+    sql = <<-SQL
+      SELECT *
+      FROM students
+      WHERE students.grade = 9
+    SQL
+
+    DB[:conn].execute(sql).map do |row|
+      self.new_from_db(row)
+    end
+  end
+
+  
 end
