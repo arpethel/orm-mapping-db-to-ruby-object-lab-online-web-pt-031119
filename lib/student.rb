@@ -85,15 +85,17 @@ class Student
     end
   end
 
-  def self.first_X_students_in_grade_10
+  def self.first_X_students_in_grade_10(selected_students)
     # call .new_from_db while new_student.grade == 9
     sql = <<-SQL
       SELECT *
       FROM students
       WHERE students.grade = 10
+      ORDER BY students.id
+      LIMIT ?
     SQL
 
-    DB[:conn].execute(sql).map do |row|
+    DB[:conn].execute(sql, selected_students).map do |row|
       self.new_from_db(row)
     end.first
   end
